@@ -1,31 +1,34 @@
 #ifndef SERIALIZET_H
 #define SERIALIZER_H
 #include <fstream>
-
+#include "FileInfo.h"
+#include <sstream>
+#include <string.h>
 template<typename ContainerType>
 class Serializer
 {
 private:
-    std::fstream xmlFile;
+    FILE* xmlFile;
 public:
     Serializer() = default;
+
     Serializer(const std::string& path)
     {
-        xmlFile.open(path, std::fstream::out|std::fstream::in);
-      // xmlFile << ""
+        xmlFile = fopen(path.c_str(), "w");
     }
     void serialize(ContainerType& container)
     {
-        xmlFile << "<?xml version=\"1.0\"?>\n" << "<FilesInfo>\n";
+        fwprintf(xmlFile, L"<?xml version=\"1.0\"?>\n<FilesInfo>\n");
         for(typename ContainerType::iterator i = container.begin(); i != container.end(); i++)
         {
-            xmlFile << i->formXMLData();
+            fwprintf(xmlFile, i->formXMLData().c_str());
         }
-        xmlFile << "</FilesInfo>\n";
+        fwprintf(xmlFile,L"</FilesInfo>\n");
     }
+
     ~Serializer()
     {
-        xmlFile.close();
+        fclose(xmlFile);
     }
 
 };

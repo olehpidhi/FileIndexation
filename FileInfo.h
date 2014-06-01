@@ -3,40 +3,45 @@
 #include <string>
 #include <time.h>
 #include <windows.h>
+#include <QDateTime>
  typedef SYSTEMTIME DateTime;
 class FileInfo
 {
 
 private:
-    std::string fName;
+    std::wstring fName;
     DateTime fDate;
     size_t fSize;
-    std::string fPath;
+    std::wstring fPath;
 
 public:
     FileInfo();
 
-    FileInfo(std::string, DateTime, size_t, std::string);
+    FileInfo(std::wstring, DateTime, size_t, std::wstring);
 
-    FileInfo(const WIN32_FIND_DATAA&, const std::string&);
+    FileInfo(const WIN32_FIND_DATA&, const std::wstring&);
 
-    inline std::string& getName();
+    FileInfo(const FileInfo&);
 
-    void setName(const std::string&);
+    const std::wstring &getName()const;
 
-    inline DateTime getDate();
+    void setName(const std::wstring&);
+
+     DateTime getDate()const;
 
     void setDate(DateTime);
 
-    inline size_t getSize();
+    size_t getSize()const;
 
     void setSize(size_t);
 
-    inline std::string& getPath();
+    const std::wstring &getPath() const;
 
-    void setPath(const std::string&);
+    void setPath(const std::wstring&);
 
-    std::string formXMLData();
+    std::wstring formXMLData();
 };
+
+QDateTime SystemTimeToQDateTime(const SYSTEMTIME&);
 
 #endif // FILEINFO_H

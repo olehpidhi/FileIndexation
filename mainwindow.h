@@ -2,8 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <list>
-#include <string>
+#include <QLabel>
+#include "indexation.h"
+#include <memory>
+#include <QAbstractListModel>
+#include <Serializer.h>
+#include "FileInfo.h"
+#include "filestablemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,10 +31,15 @@ private slots:
 
     void on_findButton_clicked();
 
+    void on_resumeButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
 
-extern std::list<std::string> discLetters;
 
+extern QLabel* currentDirLabel;
+extern IndexatorRunnable indexatorRunnable;
+extern Thread* indexatorThread;
+extern FilesTableModel model;
 #endif // MAINWINDOW_H

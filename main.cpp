@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QStatusBar>
+#include <windows.h>
 
 int main(int argc, char *argv[])
 {

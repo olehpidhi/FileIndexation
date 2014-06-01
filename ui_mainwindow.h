@@ -13,17 +13,16 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -34,12 +33,13 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_2;
-    QListView *listView;
+    QTableView *tableView;
     QGroupBox *controlsGroupBox;
     QHBoxLayout *controlsHorizontalLayout;
     QHBoxLayout *horizontalLayout;
-    QPushButton *pauseButton;
     QPushButton *startButton;
+    QPushButton *pauseButton;
+    QPushButton *resumeButton;
     QPushButton *stopButton;
     QGroupBox *searchGroupBox;
     QGridLayout *gridLayout;
@@ -50,15 +50,13 @@ public:
     QRadioButton *sizeRadioButton;
     QPushButton *findButton;
     QLineEdit *searchLineEdit;
-    QFormLayout *statusFormLayout;
-    QLabel *currentDirectoryLabel;
-    QLabel *label;
+    QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(500, 421);
+        MainWindow->resize(431, 401);
         MainWindow->setAutoFillBackground(true);
         MainWindow->setDockNestingEnabled(true);
         centralWidget = new QWidget(MainWindow);
@@ -72,10 +70,10 @@ public:
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        listView = new QListView(centralWidget);
-        listView->setObjectName(QStringLiteral("listView"));
+        tableView = new QTableView(centralWidget);
+        tableView->setObjectName(QStringLiteral("tableView"));
 
-        verticalLayout_2->addWidget(listView);
+        verticalLayout_2->addWidget(tableView);
 
         controlsGroupBox = new QGroupBox(centralWidget);
         controlsGroupBox->setObjectName(QStringLiteral("controlsGroupBox"));
@@ -86,15 +84,20 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        startButton = new QPushButton(controlsGroupBox);
+        startButton->setObjectName(QStringLiteral("startButton"));
+
+        horizontalLayout->addWidget(startButton);
+
         pauseButton = new QPushButton(controlsGroupBox);
         pauseButton->setObjectName(QStringLiteral("pauseButton"));
 
         horizontalLayout->addWidget(pauseButton);
 
-        startButton = new QPushButton(controlsGroupBox);
-        startButton->setObjectName(QStringLiteral("startButton"));
+        resumeButton = new QPushButton(controlsGroupBox);
+        resumeButton->setObjectName(QStringLiteral("resumeButton"));
 
-        horizontalLayout->addWidget(startButton);
+        horizontalLayout->addWidget(resumeButton);
 
         stopButton = new QPushButton(controlsGroupBox);
         stopButton->setObjectName(QStringLiteral("stopButton"));
@@ -102,9 +105,6 @@ public:
 
         horizontalLayout->addWidget(stopButton);
 
-        horizontalLayout->setStretch(0, 1);
-        horizontalLayout->setStretch(1, 1);
-        horizontalLayout->setStretch(2, 1);
 
         controlsHorizontalLayout->addLayout(horizontalLayout);
 
@@ -122,6 +122,7 @@ public:
         searchOptionsHorizontalLayout->setObjectName(QStringLiteral("searchOptionsHorizontalLayout"));
         nameRadioButton = new QRadioButton(searchGroupBox);
         nameRadioButton->setObjectName(QStringLiteral("nameRadioButton"));
+        nameRadioButton->setChecked(true);
 
         searchOptionsHorizontalLayout->addWidget(nameRadioButton);
 
@@ -156,26 +157,11 @@ public:
 
         verticalLayout_2->addWidget(searchGroupBox);
 
-        statusFormLayout = new QFormLayout();
-        statusFormLayout->setSpacing(6);
-        statusFormLayout->setObjectName(QStringLiteral("statusFormLayout"));
-        currentDirectoryLabel = new QLabel(centralWidget);
-        currentDirectoryLabel->setObjectName(QStringLiteral("currentDirectoryLabel"));
-
-        statusFormLayout->setWidget(0, QFormLayout::FieldRole, currentDirectoryLabel);
-
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-
-        statusFormLayout->setWidget(0, QFormLayout::LabelRole, label);
-
-
-        verticalLayout_2->addLayout(statusFormLayout);
-
         MainWindow->setCentralWidget(centralWidget);
-        listView->raise();
-        controlsGroupBox->raise();
-        label->raise();
+        statusBar = new QStatusBar(MainWindow);
+        statusBar->setObjectName(QStringLiteral("statusBar"));
+        statusBar->setAutoFillBackground(true);
+        MainWindow->setStatusBar(statusBar);
 
         retranslateUi(MainWindow);
 
@@ -186,8 +172,9 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         controlsGroupBox->setTitle(QApplication::translate("MainWindow", "Controls", 0));
-        pauseButton->setText(QApplication::translate("MainWindow", "Pause", 0));
         startButton->setText(QApplication::translate("MainWindow", "Start", 0));
+        pauseButton->setText(QApplication::translate("MainWindow", "Pause", 0));
+        resumeButton->setText(QApplication::translate("MainWindow", "Resume", 0));
         stopButton->setText(QApplication::translate("MainWindow", "Stop", 0));
         searchGroupBox->setTitle(QApplication::translate("MainWindow", "Search", 0));
         nameRadioButton->setText(QApplication::translate("MainWindow", "by Name", 0));
@@ -195,8 +182,6 @@ public:
         dateRadioButton->setText(QApplication::translate("MainWindow", "by Date", 0));
         sizeRadioButton->setText(QApplication::translate("MainWindow", "by Size", 0));
         findButton->setText(QApplication::translate("MainWindow", "Find", 0));
-        currentDirectoryLabel->setText(QString());
-        label->setText(QApplication::translate("MainWindow", "Current Diretory:", 0));
     } // retranslateUi
 
 };

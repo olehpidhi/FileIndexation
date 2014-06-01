@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>421</height>
+    <width>431</width>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QListView" name="listView"/>
+     <widget class="QTableView" name="tableView"/>
     </item>
     <item>
      <widget class="QGroupBox" name="controlsGroupBox">
@@ -37,7 +37,14 @@
       </property>
       <layout class="QHBoxLayout" name="controlsHorizontalLayout" stretch="0">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
+         <item>
+          <widget class="QPushButton" name="startButton">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QPushButton" name="pauseButton">
            <property name="text">
@@ -46,9 +53,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="startButton">
+          <widget class="QPushButton" name="resumeButton">
            <property name="text">
-            <string>Start</string>
+            <string>Resume</string>
            </property>
           </widget>
          </item>
@@ -65,7 +72,6 @@
         </layout>
        </item>
       </layout>
-      <zorder>horizontalLayoutWidget</zorder>
       <zorder></zorder>
      </widget>
     </item>
@@ -81,6 +87,9 @@
           <widget class="QRadioButton" name="nameRadioButton">
            <property name="text">
             <string>by Name</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -120,35 +129,12 @@
       </layout>
      </widget>
     </item>
-    <item>
-     <layout class="QFormLayout" name="statusFormLayout">
-      <item row="0" column="1">
-       <widget class="QLabel" name="currentDirectoryLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Current Diretory:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
    </layout>
-   <zorder>listView</zorder>
-   <zorder>horizontalLayoutWidget_2</zorder>
-   <zorder>controlsGroupBox</zorder>
-   <zorder></zorder>
-   <zorder>checkBox</zorder>
-   <zorder>nameCheckBox</zorder>
-   <zorder>extensionCheckBox</zorder>
-   <zorder>dateCheckBox</zorder>
-   <zorder></zorder>
-   <zorder>label</zorder>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

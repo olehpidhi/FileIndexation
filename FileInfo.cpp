@@ -3,14 +3,14 @@
 #include <windows.h>
 
 FileInfo::FileInfo():
-    fName(""),
+    fName(NULL),
     fSize(NULL),
-    fPath("")
+    fPath(NULL)
 {
 
 }
 
-FileInfo::FileInfo(std::string pName, DateTime pDate, size_t pSize, std::string pPath):
+FileInfo::FileInfo(std::wstring pName, DateTime pDate, size_t pSize, std::wstring pPath):
     fName(pName),
     fDate(pDate),
     fSize(pSize),
@@ -19,7 +19,7 @@ FileInfo::FileInfo(std::string pName, DateTime pDate, size_t pSize, std::string 
 
 }
 
-FileInfo::FileInfo(const WIN32_FIND_DATAA& pWindowsInfo, const std::string& absolutePath):
+FileInfo::FileInfo(const WIN32_FIND_DATA& pWindowsInfo, const std::wstring& absolutePath):
     fName(pWindowsInfo.cFileName),
     fSize(pWindowsInfo.nFileSizeHigh),
     fPath(absolutePath)
@@ -27,17 +27,25 @@ FileInfo::FileInfo(const WIN32_FIND_DATAA& pWindowsInfo, const std::string& abso
     FileTimeToSystemTime(&(pWindowsInfo.ftCreationTime), &fDate);
 }
 
-std::string& FileInfo::getName()
+FileInfo::FileInfo(const FileInfo& toCopy)
+{
+    fName = toCopy.fName;
+    fSize = toCopy.fSize;
+    fDate = toCopy.fDate;
+    fPath = toCopy.fPath;
+}
+
+const std::wstring& FileInfo::getName()const
 {
     return fName;
 }
 
-void FileInfo::setName(const std::string& pName)
+void FileInfo::setName(const std::wstring& pName)
 {
     fName = pName;
 }
 
-DateTime FileInfo::getDate()
+DateTime FileInfo::getDate()const
 {
     return fDate;
 }
@@ -47,7 +55,7 @@ void FileInfo::setDate(DateTime pDate)
     fDate = pDate;
 }
 
-size_t FileInfo::getSize()
+size_t FileInfo::getSize()const
 {
     return fSize;
 }
@@ -57,25 +65,31 @@ void FileInfo::setSize(size_t pSize)
     fSize = pSize;
 }
 
-std::string& FileInfo::getPath()
+const std::wstring& FileInfo::getPath() const
 {
     return fPath;
 }
 
-void FileInfo::setPath(const std::string& pPath)
+void FileInfo::setPath(const std::wstring& pPath)
 {
     fPath = pPath;
 }
 
-std::string FileInfo::formXMLData()
+std::wstring FileInfo::formXMLData()
 {
-    std::ostringstream XMLData;
-    XMLData << "<FileInfo>\n" <<
-               "\t<Name>" << fName << "</Name>\n" <<
-               "\t<Date>" << fDate.wYear<< "-" << fDate.wMonth << "-" << fDate.wDay << " " << fDate.wHour << ":" <<
-                             fDate.wMinute << ":" << fDate.wSecond << ":" << fDate.wMilliseconds << "</Date>\n" <<
-               "\t<Size>" << fSize << "</Size>\n" <<
-               "\t<Path>" << fPath << "</Path>\n" <<
-               "</FileInfo>\n";
+    std::wostringstream XMLData;
+    XMLData << L"<FileInfo>\n" <<
+               L"\t<Name>" << fName << L"</Name>\n" <<
+               L"\t<Date>" << fDate.wYear<< L"-" << fDate.wMonth << L"-" << fDate.wDay << L" " << fDate.wHour << L":" <<
+                             fDate.wMinute << L":" << fDate.wSecond << L":" << fDate.wMilliseconds << L"</Date>\n" <<
+               L"\t<Size>" << fSize <<L"</Size>\n" <<
+               L"\t<Path>" << fPath << L"</Path>\n" <<
+               L"</FileInfo>\n";
     return XMLData.str();
+}
+
+QDateTime SystemTimeToQDateTime(const SYSTEMTIME& timeToConvert)
+{
+    return QDateTime(QDate(timeToConvert.wYear, timeToConvert.wMonth, timeToConvert.wDay),
+                     QTime(timeToConvert.wHour, timeToConvert.wMinute, timeToConvert.wSecond, timeToConvert.wMilliseconds));
 }
