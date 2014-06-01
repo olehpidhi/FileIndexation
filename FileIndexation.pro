@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     FileInfo.cpp \
-    DiscFunctions.cpp
+    threading.cpp \
+    indexation.cpp \
+    filestablemodel.cpp
 
 HEADERS  += mainwindow.h \
     FileInfo.h \
     Serializer.h \
-    DiscFunctions.h
+    threading.h \
+    indexation.h \
+    filestablemodel.h
 
 FORMS    += mainwindow.ui
